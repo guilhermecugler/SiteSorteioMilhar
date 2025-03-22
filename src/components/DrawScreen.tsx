@@ -94,31 +94,43 @@ const DrawScreen = forwardRef(({ config, setShowPasswordModal, setPasswordAction
   }, [isDrawing, currentDigitIndex, config.targetNumber, config.drawDelay]);
 
   return (
-    <>
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-white rounded-lg shadow-xl p-8 mb-6">
-            <div className="text-center mb-6">
-              <p className="text-lg font-semibold text-gray-700">Data do Sorteio: {config.date}</p>
-              <p className="text-lg font-semibold text-gray-700">Filial: {config.branch}</p>
-              <p className="text-xl font-bold text-green-600">Prêmio: {config.prize}</p>
-            </div>
-            
-            <div className="flex justify-center gap-4 mb-6">
+    <div className="container mx-auto px-4 py-8">
+      <div className="max-w-2xl mx-auto">
+        <table className="w-full mb-8 border-collapse">
+          <thead className="bg-black/10 backdrop-blur-sm">
+            <tr>
+              <th className="py-2 px-4 text-white">Data do Sorteio</th>
+              <th className="py-2 px-4 text-white">Filial</th>
+              <th className="py-2 px-4 text-white">Prêmio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="bg-white">
+              <td className="py-2 px-4 text-center text-black">{config.date}</td>
+              <td className="py-2 px-4 text-center text-black">{config.branch}</td>
+              <td className="py-2 px-4 text-center text-black font-bold">{config.prize}</td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <div className="relative">
+          <div className="text-white text-xl font-bold mb-4 text-center">NÚMEROS SORTEADOS:</div>
+          <div className="bg-black border-2 border-yellow-400 rounded-lg p-8">
+            <div className="flex justify-center gap-4">
               {currentNumbers.map((digit, index) => (
                 <div
                   key={index}
                   className={`w-20 h-20 rounded-full ${
                     index < drawnNumbers.length
-                      ? 'bg-green-200 border-green-600'
-                      : 'bg-green-100 border-green-500'
-                  } border-4 ${
+                      ? 'bg-yellow-400'
+                      : 'bg-yellow-300'
+                  } ${
                     index === currentDigitIndex && isDrawing
                       ? 'animate-pulse'
                       : ''
                   } flex items-center justify-center transition-colors duration-300`}
                 >
-                  <span className="text-4xl font-bold text-green-700">{digit}</span>
+                  <span className="text-4xl font-bold text-black">{digit}</span>
                 </div>
               ))}
             </div>
@@ -131,7 +143,7 @@ const DrawScreen = forwardRef(({ config, setShowPasswordModal, setPasswordAction
         onClick={startDrawing}
         className="fixed bottom-0 left-0 right-0 h-32 cursor-default"
       />
-    </>
+    </div>
   );
 });
 

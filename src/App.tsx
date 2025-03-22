@@ -16,19 +16,21 @@ interface DrawScreenRef {
   beginDrawingProcess: () => void;
 }
 
+const DEFAULT_CONFIG: LotteryConfig = {
+  targetNumber: '8944',
+  date: '19/03/2025',
+  branch: 'VITORIA-PE',
+  prize: 'R$19.000,00',
+  drawDelay: 2000
+};
+
 function App() {
   const [isConfigOpen, setIsConfigOpen] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passwordAction, setPasswordAction] = useState<'config' | 'draw' | null>(null);
   const drawScreenRef = useRef<DrawScreenRef>(null);
-  const [config, setConfig] = useState<LotteryConfig>({
-    targetNumber: '8944',
-    date: '19/03/2025',
-    branch: 'VITORIA-PE',
-    prize: 'R$19.000,00',
-    drawDelay: 2000
-  });
+  const [config, setConfig] = useState<LotteryConfig>(DEFAULT_CONFIG);
 
   const handleSettingsClick = () => {
     setPasswordAction('config');
@@ -41,6 +43,11 @@ function App() {
     if (passwordAction === 'config') {
       setIsConfigOpen(true);
     }
+  };
+
+  const handleConfigSave = (newConfig: LotteryConfig) => {
+    setConfig(newConfig);
+    setIsConfigOpen(false);
   };
 
   // Show password modal when not authenticated
@@ -86,10 +93,7 @@ function App() {
       {isConfigOpen ? (
         <ConfigScreen
           config={config}
-          onSave={(newConfig) => {
-            setConfig(newConfig);
-            setIsConfigOpen(false);
-          }}
+          onSave={handleConfigSave}
           onClose={() => setIsConfigOpen(false)}
         />
       ) : (
